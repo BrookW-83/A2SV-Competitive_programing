@@ -1,0 +1,26 @@
+n = int(input())
+nums = []
+
+for _ in range(n):
+    nums.append(list(map(int, input().split())))
+
+
+sink = []
+for row in range(n):
+    
+    if 1 not in nums[row]:
+        sink.append(row + 1)
+        
+        
+source = []
+for col in range(n):
+    column = []
+    for row in range(n):
+        column.append(nums[row][col])
+        
+    if 1 not in column:
+         source.append(col + 1)
+         
+
+print (len(source) , *source)
+print (len(sink) , *sink)
