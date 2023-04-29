@@ -1,0 +1,17 @@
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        adj_list = {}
+        for node1, node2 in roads:
+            adj_list.setdefault(node1, set()).add(node2)
+            adj_list.setdefault(node2, set()).add(node1)
+        print(adj_list)
+
+        
+        maxNetwork = 0  
+        for i in range(n):
+            for j in range(i+1, n):
+                res = len(adj_list.get(i, set())) + len(adj_list.get(j, set())) - (j in adj_list.get(i, set()))
+
+                maxNetwork = max(maxNetwork, res)
+
+        return maxNetwork 
