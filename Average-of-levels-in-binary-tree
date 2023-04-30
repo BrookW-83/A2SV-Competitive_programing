@@ -1,0 +1,31 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        store = deque([root])
+        res = []
+        print(store)
+        while store:
+            store_len = len(store)
+            avg = 0
+            for i in range(store_len):
+                node = store.popleft()
+                avg += node.val
+                if node.left:
+                    store.append(node.left)
+
+                if node.right:
+                    store.append(node.right)
+
+            res.append(avg/store_len)
+
+        return res
+
+                
+        
+
+
