@@ -1,0 +1,21 @@
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        if not rooms:
+            return False
+      
+        store = deque([0])
+
+        visited = set()
+        visited.add(0)
+
+        while store:
+            node = store.popleft()
+            for neigbour in rooms[node]:
+                if neigbour not in visited:
+                    visited.add(neigbour)
+                    store.append(neigbour)
+
+        if len(visited) == len(rooms):
+            return True
+        else:
+            return False
