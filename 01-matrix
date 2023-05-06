@@ -1,0 +1,24 @@
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        row , col = len(mat), len(mat[0])
+        direction = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+        q = []
+
+        for i in range(row):
+            for j in range(col):
+                if mat[i][j] == 0:
+                    q.append((i, j))
+
+                else:
+                    mat[i][j] = '#'
+
+        for r, c in q:
+            for i, j in direction:
+                new_row = r + i
+                new_col = c + j
+
+                if 0 <= new_row < row and 0 <= new_col < col and mat[new_row][new_col] == '#':
+                    mat[new_row][new_col] = mat[r][c] + 1
+                    q.append((new_row, new_col))
+
+        return mat
