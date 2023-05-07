@@ -1,0 +1,14 @@
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        s = defaultdict(list)
+
+        for i in nums:
+            if s[i - 1]:
+                heapq.heappush(s[i], heapq.heappop(s[i -1]) + 1)
+
+            else:
+                heapq.heappush(s[i], 1)
+
+        return all( j >= 3 for num in s.values() for j in num)
+
+        
