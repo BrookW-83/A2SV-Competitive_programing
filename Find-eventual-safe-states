@@ -1,0 +1,36 @@
+class Solution:
+    def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+        degree = [0]*len(graph)
+        adj_list = defaultdict(list)
+
+        for i in range(len(graph)):
+            for j in graph[i]:
+                adj_list[j].append(i)
+                degree[i] += 1
+ 
+        q = deque()
+        path= []
+        for i in range(len(degree)):
+            if degree[i] == 0:
+                q.append(i)
+                path.append(i)
+  
+        while q:
+            num = q.popleft()
+            for child in adj_list[num]:
+                degree[child] -= 1
+                if degree[child] == 0:
+                    q.append(child)
+                    path.append(child)
+
+        
+        path.sort()
+        return path
+
+
+
+        
+        
+
+
+        
