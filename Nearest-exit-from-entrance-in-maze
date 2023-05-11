@@ -1,0 +1,21 @@
+class Solution:
+    def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+        direction = [(1, 0), (-1, 0), (0, -1), (0, 1)]
+        visited = set()
+        q = deque()
+        q.append((entrance[0], entrance[1], 0))
+
+        while q:
+            row, col, d = q.popleft()
+            for i, j in direction:
+                new_row = row + i
+                new_col = col + j
+                if (0 <= new_row < len(maze) and 0 <= new_col < len(maze[0])):
+                    if maze[new_row][new_col] == "." and (new_row, new_col) not in visited:
+                        q.append((new_row, new_col, d + 1))
+                        visited.add((new_row, new_col))
+
+                elif (row, col) != (entrance[0], entrance[1]):
+                    return d
+
+        return -1
