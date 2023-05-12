@@ -1,0 +1,26 @@
+class Solution:
+    def getAncestors(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        graph = defaultdict(list)
+        inDegree = [0]*n
+        for e1, e2 in edges:
+            graph[e1].append(e2)
+            inDegree[e2] += 1
+
+        q = deque()
+        ancestor = [set()] * n
+        for i in range(n):
+            if inDegree[i] == 0:
+                q.append(i)
+
+        while q:
+            num = q.popleft()
+            for child in graph[num]:
+                inDegree[child] -= 1
+                ancestor[child] = ancestor[child].union(ancestor[num]).union({num})
+                if inDegree[child] == 0:
+                    q.append(child)
+        ans = []
+        for i in range(n):
+            ans.append(sorted(ancestor[i]))
+            
+        return ans
