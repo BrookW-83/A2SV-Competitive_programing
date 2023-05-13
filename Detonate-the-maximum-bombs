@@ -1,0 +1,29 @@
+class Solution:
+    def maximumDetonation(self, bombs: List[List[int]]) -> int:
+        if len(bombs)==1:
+            return 1
+        
+        adj_list={i:[] for i in range(len(bombs))}
+        
+        for i in range(len(bombs)):
+            x1, y1, r1=bombs[i]
+            for j in range(i+1,len(bombs)):
+                x2,y2,r2=bombs[j]
+                d = ((x2-x1) **2+ (y2-y1)**2) **(1/2)
+                if d<=r1:
+                    adj_list[i].append(j)  
+                if d<=r2:
+                    adj_list[j].append(i)
+        
+        def dfs(visited,start):
+            visited.add(start)
+            for child in adj_list[start]:
+                if child not in visited:
+                    dfs(visited,child)
+        detonation=1   
+        for i in adj_list:
+            visited=set()
+            visited.add(i)
+            dfs(visited,i)
+            detonation = max(detonation,len(visited))
+        return detonation
