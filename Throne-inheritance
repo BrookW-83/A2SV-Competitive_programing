@@ -1,0 +1,36 @@
+class ThroneInheritance:
+
+    def __init__(self, kingName: str):
+        self.King = kingName
+        self.curOrder = defaultdict(list)
+        self.dead = set()      
+
+    def birth(self, parentName: str, childName: str) -> None:
+        
+        self.curOrder[parentName].append((childName))
+    
+    def death(self, name: str) -> None:
+        self.dead.add(name)
+
+    def getInheritanceOrder(self) -> List[str]:
+        successor = []
+        def dfs(node = self.King):
+            if node not in self.dead:
+                successor.append(node)
+            if node in self.curOrder:
+                for child in self.curOrder[node]:
+                    print(child)
+                    dfs(child)
+        
+        dfs()
+
+        return successor
+
+        
+
+
+# Your ThroneInheritance object will be instantiated and called as such:
+# obj = ThroneInheritance(kingName)
+# obj.birth(parentName,childName)
+# obj.death(name)
+# param_3 = obj.getInheritanceOrder()
