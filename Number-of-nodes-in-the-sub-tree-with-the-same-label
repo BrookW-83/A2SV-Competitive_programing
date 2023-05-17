@@ -1,0 +1,23 @@
+class Solution:
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        graph = defaultdict(list)
+        for e1, e2 in edges:
+            graph[e1].append(e2)
+            graph[e2].append(e1)
+        
+        count = {}
+        res = [0] * n
+        def dfs(node, parent):
+            if labels[node] not in count:
+                count[labels[node]] = 0
+            previous = count[labels[node]]
+            count[labels[node]] += 1
+
+            for child in graph[node]:
+                if child != parent:
+                    dfs(child, node)
+            res[node] = count[labels[node]] - previous    
+            return count
+        dfs(0, -1)
+
+        return res  
