@@ -1,0 +1,11 @@
+t = int(input())
+
+path = 0
+for i in range(t):
+    grid = list(map(int, input().split()))
+    for j in range(i + 1, t):
+        if grid[j] != 0:
+            path += 1
+            
+            
+print(path)
