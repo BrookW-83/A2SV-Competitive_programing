@@ -1,0 +1,41 @@
+class Solution:
+    def minScore(self, n: int, roads: List[List[int]]) -> int:
+        uf = UnionFind(n)
+        for x, y, d in roads:
+            uf.union(x, y)
+
+        dist = float("inf")
+        for x, y, d in roads:
+            if uf.find(x) == uf.find(1):
+                dist = min(dist, d)
+
+        return dist
+
+class UnionFind:
+        def __init__(self, s):
+            self.parent = {i:i for i in range(1, s + 1)}
+            self.size = {i:0 for i in range(1, s + 1)}
+
+        def find(self, x):
+            if self.parent[x] == x:
+                return x
+            par = self.find(self.parent[x])
+            self.parent[x] = par
+
+            return par
+
+        def union(self, x, y):           
+            p1 = self.find(x)
+            p2 = self.find(y)
+
+            if p1 == p2:
+                return
+            if self.size[p1] >= self.size[p2]:
+                self.parent[p2] = p1
+                self.size[p1] += self.size[p2]
+
+            else:
+                self.parent[p1] = p2
+                self.size[p2] += self.size[p1] 
+
+        
