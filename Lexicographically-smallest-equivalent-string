@@ -1,0 +1,35 @@
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        n = len(s1)
+        uf = unionFind(26)
+
+        for i in range(n):
+            uf.union(n, s1, s2)
+
+        res = []
+        for c in baseStr:
+            res.append(uf.find(c))
+
+        return "".join(res)
+
+class unionFind:
+    def __init__(self, s):
+        self.parent = {c:c for c in map(chr, range(ord('a'), ord('z')+1))}
+
+
+    def find(self, c):
+        if self.parent[c] != c:
+            self.parent[c] = self.find(self.parent[c])
+
+        return self.parent[c]
+
+    def union(self, n, s1, s2):
+        for i in range(n):
+            p1 = self.find(s1[i])
+            p2 = self.find(s2[i])
+
+            if p1 < p2:
+                self.parent[p2] = p1
+
+            else:
+                self.parent[p1] = p2
