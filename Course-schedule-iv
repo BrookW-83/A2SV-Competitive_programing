@@ -1,0 +1,35 @@
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        graph = defaultdict(set)
+        inDegree = [0] * numCourses
+        for a, b in prerequisites:
+            graph[a].add(b)
+            inDegree[b] += 1
+
+
+        q = deque()
+        for i in range(numCourses):
+            if inDegree[i] == 0:
+                q.append(i)
+
+        look_up = defaultdict(set)
+        while q:
+            n = q.popleft()
+            for child in graph[n]:
+                look_up[child].add(n)
+                look_up[child].update(look_up[n])
+
+                inDegree[child] -=1
+                if inDegree[child] == 0:
+                    q.append(child)
+
+        res = [] 
+        for queri in queries:
+            if queri[0] in look_up[queri[1]]:
+                res.append(True)
+            else:
+                res.append(False)
+            
+        return res
+
+        
