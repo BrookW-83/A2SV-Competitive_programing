@@ -1,0 +1,37 @@
+class Solution:
+    def equationsPossible(self, equations: List[str]) -> bool:
+        uf = unionFind(26)
+
+        for eq in equations:
+            if eq[1] == '=':
+                c1, c2 = eq[0], eq[3]
+                uf.union(c1, c2)
+
+        for eq in equations:
+            if eq[1] == '!':
+                if uf.find(eq[0]) == uf.find(eq[3]):
+                    return False
+
+        return True 
+
+
+class unionFind:
+    def __init__(self, size):
+        self.parent = {}
+
+    def find(self, c):
+        if not self.parent.get(c):
+                self.parent[c] = c
+                return c
+        if self.parent[c] == c:
+            return c
+        
+        return self.find(self.parent[c])
+
+    def union(self, c1, c2):
+        p1 = self.find(c1)
+        p2 = self.find(c2)
+
+        if p1 == p2:
+            return
+        self.parent[p2] = p1
