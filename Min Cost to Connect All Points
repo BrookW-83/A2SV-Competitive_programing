@@ -1,0 +1,44 @@
+class UnionFind(object):
+    def __init__(self, items):
+        self.i_to_s = {i: i for i in items}
+        self.s_to_i = {i: set([i]) for i in items}
+
+    def find(self, item):
+        return self.i_to_s[item]
+    
+    def union(self, s1, s2):
+        lower_num_set = min(s1, s2)
+        higher_num_set = max(s1, s2) 
+    
+        higher_items = self.s_to_i[higher_num_set]
+        for item in higher_items:
+            self.i_to_s[item] = lower_num_set
+        self.s_to_i[lower_num_set] |= higher_items
+        del self.s_to_i[higher_num_set]
+        return lower_num_set
+
+class Solution(object):
+    def minCostConnectPoints(self, points):
+        def dist(x, y):
+            return abs(x[0] - y[0]) + abs(x[1] - y[1])
+
+ 
+        
+        UF = UnionFind(range(len(points)))
+        minHeap = []
+        for i in range(len(points) - 1):
+            for j in range(i + 1, len(points)):
+                heapq.heappush(minHeap, (dist(points[i], points[j]), (i, j)))
+
+        cost = 0
+        n_edges = 0
+        while n_edges < len(points) - 1:
+            dist, (i, j) = heapq.heappop(minHeap)
+            if UF.find(i) == UF.find(j):
+                continue
+            cost += dist
+            n_edges += 1
+            UF.union(UF.find(i), UF.find(j))
+
+        return cost
+        
