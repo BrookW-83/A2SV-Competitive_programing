@@ -1,0 +1,21 @@
+class Solution:
+    def prevPermOpt1(self, arr: List[int]) -> List[int]:
+        n = len(arr)
+        index = 0
+
+        #find first maximum to the right
+        for i in range(n -1, 0, -1):
+            if arr[i - 1] > arr[i]:
+                index = i - 1
+                break
+        #if out of boundes it is already smallest
+        if index < 0:
+            return arr
+        #find the second maximu to the right
+        #swap the two numbers
+        for i in range(n - 1, index, -1):
+            if arr[i] < arr[index] and arr[i] != arr[i - 1]:
+                arr[i], arr[index] = arr[index], arr[i]
+                break
+
+        return arr
