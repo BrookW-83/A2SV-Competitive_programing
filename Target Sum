@@ -1,0 +1,22 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        memo = {}
+
+        def dp(index, currSum):
+            if (index, currSum) in memo:
+                return memo[index, currSum]
+            if currSum == target and index == len(nums):
+                return 1
+            if index == len(nums):
+                return 0
+            memo[index] = currSum + nums[index]
+            pos = dp(index + 1, currSum + nums[index])
+            neg = dp(index + 1, currSum - nums[index])
+
+            memo[index, currSum] = pos + neg
+            return pos+neg
+
+        return dp(0, 0)
+
+
+        
