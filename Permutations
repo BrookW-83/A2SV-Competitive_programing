@@ -1,0 +1,18 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        allPermutation = []
+
+        def backTrack(p, q):
+            if len(p) == len(nums):
+                allPermutation.append(p.copy())
+                return
+
+            for i in range(len(q)):
+                p.append(q[i])
+                curr = q.copy()
+                curr.pop(i)
+                backTrack(p, curr)
+                p.pop()
+
+        backTrack([], nums.copy())
+        return allPermutation
