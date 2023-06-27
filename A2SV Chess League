@@ -1,0 +1,45 @@
+from cmath import inf
+n, k = map(int, input().split())
+nums = list(map(int, input().split()))
+league = []
+for i in range(1, pow(2, n)+1):
+    league.append(i)
+    
+ 
+ 
+def helper(league, nums, k):
+    if len(league) == 1:
+        return league
+        
+    n = len(league) 
+ 
+    size = int(n/2)
+ 
+    left = helper(league[:size], nums, k)
+    right = helper(league[size:], nums, k)
+    res = []
+ 
+    minL = inf
+    minR = inf
+    for i in left:
+        minL = min(minL, nums[i-1])
+ 
+    for i in right:
+        minR = min(minR, nums[i-1])
+ 
+    for i in left:
+        if nums[i-1] > minR:
+            res.append(i)
+        elif abs(nums[i-1] - minR) <= k:
+            res.append(i)
+ 
+    for j in right:
+        if nums[j-1] > minL:
+            res.append(j)
+        elif abs(nums[j-1] - minL) <= k:
+            res.append(j)
+ 
+    return res
+ 
+ 
+print(*helper(league, nums, k))
