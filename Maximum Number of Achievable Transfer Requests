@@ -1,0 +1,28 @@
+class Solution:
+    def __init__(self):
+        self.res = 0
+
+    def helper(self, start, req, indegree,n, count):
+        if start == len(req):
+            for i in range(n):
+                if indegree[i] != 0:
+                    return
+            self.res = max(self.res, count)
+            return
+
+        #Take
+        indegree[req[start][0]] -= 1
+        indegree[req[start][1]] += 1
+        self.helper(start +1, req, indegree, n, count + 1)
+
+        #Not Take
+        indegree[req[start][0]] += 1
+        indegree[req[start][1]] -= 1
+        self.helper(start +1, req, indegree, n, count)
+
+
+    def maximumRequests(self, n: int, requests: List[List[int]]) -> int:
+        indegree = [0] * n
+        self.helper(0, requests, indegree, n, 0)
+        return self.res
+       
