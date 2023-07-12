@@ -1,0 +1,25 @@
+from collections import defaultdict
+
+n, m = map(int, input().split())
+grid = []
+row_count = defaultdict(list)
+col_count = defaultdict(list)
+
+for row in range(n):
+    word = input()
+    grid.append(word)
+    
+    for col, char in enumerate(word):
+        row_count[row].append(char)
+        col_count[col].append(char)
+
+        
+        
+crossword = []
+for i, word in enumerate(grid):
+    for j, char in enumerate(word):
+        if row_count[i].count(char) == 1 and col_count[j].count(char) == 1:
+            crossword.append(char)
+            
+            
+print("".join(crossword))
