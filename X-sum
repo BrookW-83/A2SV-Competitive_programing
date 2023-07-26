@@ -1,0 +1,26 @@
+from collections import defaultdict
+t = int(input())
+ 
+for _ in range(t):
+    a, b = map(int, input().split())
+    
+    matrix = []
+    for i in range(a):
+        temp = list(map(int, input().split()))
+        matrix.append(temp)
+        
+    left_ = defaultdict(int)
+    right_ = defaultdict(int)
+    
+    for i, grid in enumerate(matrix):
+        for j, col in enumerate(grid):
+            left_[i - j ] += col
+            right_[i + j] += col
+            
+    maxSum = 0
+    for i, row in enumerate(matrix):
+        for j, col in enumerate(row):
+            temp = left_[i - j] + right_[i + j]
+            temp -= matrix[i][j]
+            maxSum = max(maxSum, temp)
+    print(maxSum)
