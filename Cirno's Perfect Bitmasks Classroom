@@ -1,0 +1,16 @@
+t = int(input())
+ 
+for _ in range(t):
+    isValid = False
+    nums = int(input())
+    if nums == 1:
+        print(3)
+        isValid = True
+    elif nums % 2 == 1 and nums != 1:
+        print(1)
+        isValid = True
+    else:
+        if 1<<int(bin(nums)[::-1].index("1")) == nums:
+            print((1<<int(bin(nums)[::-1].index("1")))+1)
+        else:
+            print((1<<int(bin(nums)[::-1].index("1"))))
