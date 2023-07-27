@@ -1,0 +1,28 @@
+t = int(input())
+ 
+for _ in range(t):
+    nums = int(input())
+    arr = list(map(int,input().split(" ")))
+    count = 0
+    def helper(arr):
+        global count
+        if len(arr) == 1:
+            return arr
+        
+        mid = len(arr)//2
+        left = helper(arr[:mid])
+        right = helper(arr[mid:])
+ 
+        if left[0] > right[0]:
+            count += 1
+            return right + left
+        return left + right
+    
+    new_arr= helper(arr)
+ 
+    if new_arr == sorted(arr):
+        print(count)
+    else:
+        print(-1)
+ 
+    count = 0
