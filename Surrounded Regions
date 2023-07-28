@@ -1,0 +1,40 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        directions = [(0, 1), (0, -1), (1,0), (-1, 0)]
+
+        def Valid(row, col):
+            return (0 <= row < len(board)-1) and (0 <= col < len(board[0])-1) and board[row][col] == 'O'
+
+        visited = set()
+
+        def dfs(row, col, ):
+            visited.add((row, col))
+            
+
+            for i, j in directions:
+                new_row = row + i
+                new_col = col + j 
+                
+                if Valid(new_row, new_col) and  (new_row, new_col) not in visited:
+                    dfs(new_row, new_col)
+
+        for row in range(1, len(board)-1):
+            if board[row][0] == 'O':
+                dfs(row, 0)
+            if board[row][-1] == 'O':
+                dfs(row, len(board[0])-1)
+        for col in range(1, len(board[0])-1):
+            if board[0][col] == 'O':
+                dfs(0, col)
+            if board[-1][col] == 'O':
+                dfs(len(board)-1, col)
+
+        for i in range(1, len(board) - 1):
+            for j in range(1, len(board[0]) - 1):
+                if board[i][j] == 'O' and (i, j) not in visited:
+                    board[i][j] = 'X'
+
+        return board
