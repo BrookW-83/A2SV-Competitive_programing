@@ -1,0 +1,30 @@
+class Solution:
+    def racecar(self, target: int) -> int:
+        q = deque([(0, 1)])
+        visited = set([0, 1])
+        step = 0
+
+        while q:
+            n = len(q)
+            for i in range(n):
+                p, s = q.popleft()
+
+                if p == target:
+                    return step
+                
+                #acceleration
+                new_p = p + s
+                new_s = s * 2
+                if 0 <= new_p <= (2 * target) and (new_p, new_s) not in visited:
+                    q.append((new_p, new_s))
+                    visited.add((new_p, new_s))
+                #reverse
+                if s > 0:
+                    new_s = -1
+                else:
+                    new_s = 1
+                if (step, p, new_s) not in visited:
+                    q.append((p, new_s))
+                    visited.add((p, new_s))
+
+            step += 1
