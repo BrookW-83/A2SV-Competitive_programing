@@ -1,0 +1,21 @@
+t = int(input())
+
+for _ in range(t):
+    n = int(input())
+    nums = list(map(int, input().split()))
+    
+    maxSum = 0
+    curr = nums[0]
+    currSum = nums[0]
+    
+    for i in nums:
+        if (i < 0 and curr > 0) or (curr < 0 and i > 0):
+            maxSum += currSum
+            currSum = i
+        curr = i
+        
+        currSum = max(currSum, i)
+        
+        
+    maxSum += currSum
+    print(maxSum)
