@@ -1,0 +1,43 @@
+class Solution:
+    def updateBoard(self, board: List[List[str]], click: List[int]) -> List[List[str]]:
+        if board[click[0]][click[1]] == 'M':
+            board[click[0]][click[1]] = 'X'
+            return board
+        if board[click[0]][click[1]] == 'B' or board[click[0]][click[1]] in ['1','2','3','4','5','6','7','8']:
+            return board
+        
+        #regular case: when board[click[0]][click[1]] == 'E'
+        def check_surrounding(board, i, j, m, n):
+            res = 0
+            for step1 in [-1, 0, 1]:
+                for step2 in [-1, 0, 1]:
+                    if step1 == 0 and step2 == 0:
+                        continue
+                    x = i+step1
+                    y = j+step2
+                    if x in range(0, m) and y in range(0, n):
+                        res += 1 if board[x][y] == 'M' else 0
+            return res
+        
+        def dfs(board, i, j, m, n):
+            if i in range(0, m) and j in range(0, n) and board[i][j] == 'E':
+                #if it is not an unrevealed empty square, then go out of recursion    
+                surround_mines = check_surrounding(board, i, j, m, n)
+                if surround_mines>0:
+                    board[i][j] = str(surround_mines)
+                    return
+                else:
+                    board[i][j] = 'B'
+                    for step1 in [-1, 0, 1]:
+                        for step2 in [-1, 0, 1]:
+                            if step1 == 0 and step2 == 0:
+                                continue
+                            x = i+step1
+                            y = j+step2
+                            if x in range(0, m) and y in range(0, n):
+                                dfs(board, x, y, m, n)
+        m = len(board)
+        n = len(board[0])
+        dfs(board, click[0], click[1], m, n)   
+        return board
+        
