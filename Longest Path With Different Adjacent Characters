@@ -1,0 +1,27 @@
+class Solution:
+    def longestPath(self, parent: List[int], s: str) -> int:
+        n = len(parent)
+        path = 0
+        graph = defaultdict(list)
+
+        for i in range(1, n):
+            graph[parent[i]].append(i)
+
+        def dfs(node, parent):
+            nonlocal path
+
+            i, j = 0, 0
+            for n in graph[node]:
+                st = dfs(n, node)
+                if s[n] != s[node]:
+                    if st > i: 
+                        j = i
+                        i = st
+                    elif st == i or st > j: 
+                        j = st
+            path = max( path ,i + j + 1)
+            return i + 1
+
+        dfs(0, -1)
+
+        return path
