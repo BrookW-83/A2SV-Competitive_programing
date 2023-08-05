@@ -1,0 +1,40 @@
+class Solution:
+    def slidingPuzzle(self, board: List[List[int]]) -> int:
+        moves = 0
+        target = "123450"
+        #concatination
+        s = []
+        q = []      
+        for row in board:
+            for i in row:
+                s.append(str(i))
+        puzzle = "".join(s)
+        q.append(puzzle)
+
+        direction = [[1, 3], [0, 2, 4], [1, 5], [0, 4], [1, 3, 5], [2, 4]]
+        visited = set()
+
+        while len(q) > 0:
+            for i in range(len(q)):
+                change = q.pop(0)
+                print(change)
+
+                if change == target:
+                    return moves
+
+                position = change.find("0")
+                for j in direction[position]:
+                    num = change[j]
+                    change_list = list(change)
+                    change_list[j] = "0"
+                    change_list[position] = num
+
+                    next_change = "".join(change_list)
+                    if next_change not in visited:
+                        visited.add(next_change)
+                        q.append(next_change)
+
+            moves += 1
+        return -1
+
+        
