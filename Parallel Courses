@@ -1,0 +1,36 @@
+from collections import deque
+
+def parallelCourses(n, prerequisites):
+    graph = [[] for _ in range(n+1)]
+    indegree = [0 for _ in range(n+1)]
+    for u, v in prerequisites:
+        graph[u].append(v)
+        indegree[v] += 1
+
+
+    q = deque()
+    seen = set()
+    for node in range(1, n+1):
+        if indegree[node] == 0:
+            q.append(node)
+            seen.add(node)
+
+    courses = 0
+    while q:
+        size = len(q)
+        for _ in range(size):
+            node = q.popleft()
+        
+            for child in graph[node]:
+                indegree[child] -= 1
+                if indegree[child] == 0:
+                    q.append(child)
+                    seen.add(child)
+
+        courses += 1
+
+    if len(seen) != n:
+        return -1
+
+    return courses
+    
