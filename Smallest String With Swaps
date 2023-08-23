@@ -1,0 +1,60 @@
+class UnionFind:
+    def __init__(self, i):
+        self.parent = list(range(i))
+        self.rank = [1] * i
+
+    def find(self, x):
+        if x == self.parent[x]:
+            return x
+        else:
+            self.parent[x] = self.find(self.parent[x])
+            return self.parent[x]
+            
+    def union(self, x, y):
+        parent_x = self.find(x)
+        parent_y = self.find(y)
+
+        if parent_x != parent_y:
+            if self.rank[parent_x] >= self.rank[parent_y]:
+                self.parent[parent_y] = parent_x
+                self.rank[parent_x] += self.rank[parent_y]
+            else:
+                self.parent[parent_x] = parent_y
+                self.rank[parent_y] += self.rank[parent_x]
+        return
+
+
+class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        n = len(s)
+        self.uf = UnionFind(n)
+
+        for a, b in pairs:
+            self.uf.union(a, b)
+
+        root_index = {}
+        root_pairs = {}
+
+        for i in range(n):
+            root = self.uf.find(i)
+            if root not in root_index:
+                root_index[root] = [i]
+                root_pairs[root] = [s[i]]
+            else:
+                root_index[root].append(i)
+                root_pairs[root].append(s[i])
+
+        res = [0] * n
+        for root in root_index:
+            sorted_char = sorted(root_pairs[root])
+            for index, slot in enumerate(root_index[root]):
+                res[slot] = sorted_char[index]
+
+        ans = "".join(res)
+
+        return ans
+
+
+
+    
+        
