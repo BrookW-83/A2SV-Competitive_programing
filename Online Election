@@ -1,0 +1,24 @@
+class TopVotedCandidate:
+
+    def __init__(self, persons: List[int], times: List[int]):
+        self.candidate = []
+        self.times = []
+        self.store = collections.defaultdict(int)
+        self.num = 0
+        self.index = -1
+
+        for i in range(len(times)):
+            self.times.append(times[i])
+            self.store[persons[i]] += 1
+
+            if self.store[persons[i]] >= self.num:
+                self.candidate.append(persons[i])
+                self.num = self.store[persons[i]]
+            else:
+                self.candidate.append(self.candidate[-1])
+        
+
+    def q(self, t: int) -> int:
+        index = bisect.bisect_right(self.times, t)
+        return self.candidate[index - 1]
+        
