@@ -1,0 +1,19 @@
+class Solution:
+    def splitString(self, s: str) -> bool:
+        result  = []
+        
+        def backTrack(curr):
+            if curr >= len(s):
+                return len(result) >= 2
+
+            for i in range(curr, len(s)):
+                val = int(s[curr : i+1])
+                if not result or val == result[-1]-1:
+                    result.append(val)
+                    if backTrack(i + 1):
+                        return True
+                    result.pop()
+
+            return False
+
+        return backTrack(0)
