@@ -1,0 +1,25 @@
+class Solution:
+    def minSteps(self, n: int) -> int:
+        memo = {}
+
+        def dp(s, clipboard):
+            if (s, clipboard) in memo:
+                return memo[(s, clipboard)]
+            if s == n:
+                return 0
+            if s > n:
+                return float('inf')
+            
+            copy_paste = dp(s + s, s)+2
+            paste = float('inf')
+            if clipboard:
+                paste = dp(s + clipboard, clipboard)+1
+            
+            memo[(s, clipboard)] = min(copy_paste, paste)
+            return memo[(s, clipboard)]
+        
+        return dp(1, 0)
+                
+            
+                
+            
