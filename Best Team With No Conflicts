@@ -1,0 +1,18 @@
+class Solution:
+    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        pairs = [[ages[i], scores[i]] for i in range(len(scores))]
+        pairs.sort()
+        
+        dp = [0] * len(scores)
+
+        for i in range(len(dp)):
+            curr = pairs[i][1]
+            dp[i] = curr
+
+            for j in range(i):
+                score = pairs[j][1]
+                if curr >= score:
+                    dp[i] = max(curr + dp[j], dp[i])
+                print(dp)
+
+        return max(dp)
