@@ -1,0 +1,41 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.prefixSum = 0 
+
+class MapSum:
+
+    def __init__(self):
+        self.root = TrieNode()
+        self.store = {}
+        
+    def insert(self, key: str, val: int) -> None:
+        currVal = val
+        if key in self.store:
+            currVal = val - self.store[key]
+        self.store[key] = val
+
+        maps = self.root
+        for char in key:
+            if char not in maps.children:
+                maps.children[char] = TrieNode()
+            maps = maps.children[char]
+            maps.prefixSum += currVal
+
+    def sum(self, prefix: str) -> int:
+        maps = self.root
+
+        for char in prefix:
+            if char not in maps.children:
+                maps.children[char] = TrieNode()
+            maps = maps.children[char]
+
+        return maps.prefixSum
+
+        
+
+
+# Your MapSum object will be instantiated and called as such:
+# obj = MapSum()
+# obj.insert(key,val)
+# param_2 = obj.sum(prefix)
