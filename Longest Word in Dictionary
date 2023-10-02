@@ -1,0 +1,37 @@
+class TrieNode(object):
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        trie = TrieNode()
+        words.sort()
+        res = ""
+
+        for word in words:
+            currTrie = trie
+            for char in word:
+                if char not in currTrie.children:
+                    currTrie.children[char] = TrieNode()
+
+                currTrie = currTrie.children[char]
+            currTrie.is_end = True
+
+
+
+        for word in words:
+            if len(res) > len(word):
+                continue
+
+            currTrie = trie
+            for char in word:
+                currTrie = currTrie.children[char]
+                if not currTrie.is_end:
+                    break
+                
+            if currTrie.is_end and len(word) > len(res):
+                res = word
+
+        return res
+
