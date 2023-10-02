@@ -1,0 +1,45 @@
+class Solution:
+    def minimumTotalPrice(self, n: int, edges: List[List[int]], price: List[int], trips: List[List[int]]) -> int:
+        adjList = defaultdict(list)
+        count =  defaultdict(int)
+
+        for e1, e2 in edges:
+            adjList[e1].append(e2) 
+            adjList[e2].append(e1)
+
+        seen = set()
+        def dfs(node, path, end, seen):
+            seen.add(node)
+            if node == end:
+                return path
+
+            for child in adjList[node]:
+                if child not in seen:
+                    p = dfs(child, path + [child], end, seen)
+                    if p != []:
+                        return p
+
+            return []
+
+        for s, e in trips:
+            seen = set()
+            temp = dfs(s, [s], e, set([s]))
+            for node in temp:
+                count[node] += 1
+
+
+        def dp(node,seen):
+            half = (price[node] * count[node]) / 2
+            full = (price[node] * count[node])
+
+            for child in adjList[node]:
+                if child not in seen:
+                    seen.add(child)
+                    val1, val2 = dp(child, seen)
+
+                    half += val1
+                    full += min(val1, val2)
+
+            return full, half
+
+        return int(min(dp(0, set([0]))))
