@@ -1,0 +1,29 @@
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        graph = defaultdict(list)
+        for e1, e2, c in flights:
+            graph[e1].append([e2, c])
+
+        priority_q = [(0, src, -1)]
+        distance = 0
+        visited = {}
+        res = inf
+        while priority_q:
+            cost, node, step = heappop(priority_q)
+
+            if step > k:
+                continue
+            if node == dst:
+                if step <= k:
+                    res = min(res, cost)
+
+            if node in visited:
+                if visited[node] < step:
+                    continue
+            visited[node] = step
+
+            for child, weight in graph[node]:
+                new_cost = cost + weight
+                heappush(priority_q, (new_cost, child, step + 1))
+
+        return res if res != inf else -1
