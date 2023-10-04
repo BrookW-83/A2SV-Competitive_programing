@@ -1,0 +1,15 @@
+class Solution:
+    def lastStoneWeightII(self, stones: List[int]) -> int:
+        dp = defaultdict(list)
+
+        def dfs(index, total):
+            if index >= len(stones):
+                return abs(total)
+
+            curr = (index, total)
+            if curr in dp:
+                return dp[curr] 
+
+            dp[(index, total)] = min(dfs(index + 1, total + stones[index]), dfs(index + 1, total - stones[index]))
+
+            return dp[(index, total)]
