@@ -1,0 +1,50 @@
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        action = Trie()
+
+        for i in nums:
+            num = "{:032b}".format(i)
+            action.insert(num)
+
+        for i in nums:
+            num = "{:032b}".format(i)
+            action.search(num, i)
+
+        return action.xor
+
+
+class Trie:
+    def __init__(self):
+        self.root = {}
+        self.xor = 0
+
+    def insert(self, nums):
+        currTrie = self.root
+
+        for char in nums:
+            if char not in currTrie:
+                currTrie[char] = {}
+            currTrie = currTrie[char]
+
+    def search(self, nums, i):
+        currTrie = self.root
+        t = ""
+        a, b = '0', '1'
+        for char in nums:
+            if char == a and b in currTrie:
+                t += b
+                currTrie = currTrie[b]
+
+            elif char == b and a in currTrie:
+                t += a
+                currTrie = currTrie[a]
+            
+            else:
+                t += char
+                currTrie = currTrie[char]
+            
+        self.xor = max(self.xor, int(t, 2) ^ i)
+
+
+
+        
