@@ -1,0 +1,41 @@
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        relation = defaultdict(list)
+        for index, char in enumerate(equations):
+            a, b = char
+            relation[a].append([b, values[index]])
+            relation[b].append([a, 1/ values[index]])
+
+        print(relation)
+        def dfs(node, dest, visited, curr, cal):
+            visited[node] = 1
+            if node == dest:
+                curr[0] = cal
+                return True
+
+            if node in relation:
+                for child, val in relation[node]:
+                    if visited[child] == 0:
+                        if dfs(child, dest, visited, curr, cal * val):
+                            return True
+            return False
+
+        res = []
+        for q1, q2 in queries:
+            if q1 == q2:
+                return res.append(1.0)
+            visited = {key:0 for key in relation}
+            curr = [-1.0]
+
+            if (q1 in relation) and (q2 in relation):
+
+                if dfs(q1, q2, visited, curr, 1):
+                    print(curr[0])
+                    res.append(curr[0])
+                else:
+                    res.append(-1.0)
+            else:
+                return res.append(-1.0)
+
+        return res
+        
