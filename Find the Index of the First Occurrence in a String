@@ -1,0 +1,36 @@
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        alpha = 27
+
+        m = len(needle)
+        n = len(haystack)
+
+        if m > n:
+            return -1
+
+        hash_m = 0 
+        for i in range(m):
+            hash_m += ((ord(needle[i]) - 96) * pow(alpha, (m - 1 - i)))
+
+
+        hash_n = 0
+        for i in range(m):
+            hash_n += ((ord(haystack[i]) - 96) * pow(alpha, (m - 1 - i)))
+
+        if hash_n == hash_m:
+                return 0
+
+        p1 = 0
+        for p2 in range(m, n):  
+            # add last
+            add_one = (ord(haystack[p2]) - 96)
+            #remove first
+            remove = ((ord(haystack[p1]) - 96) * pow(alpha, (m - 1)))
+
+            hash_n = (hash_n - remove) * alpha + add_one
+            p1 += 1
+
+            if hash_n == hash_m:
+                return p1
+
+        return -1
