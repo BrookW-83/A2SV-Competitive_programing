@@ -1,0 +1,17 @@
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        gas_cost = zip(gas, cost)
+        tank = [g - c for g, c in gas_cost]
+ 
+        if sum(tank) < 0:
+            return -1
+
+        gas_tank = 0
+        index = 0
+        for i, g in enumerate(tank):
+            gas_tank += g
+            if gas_tank < 0:
+                gas_tank = 0
+                index = i + 1
+
+        return index
