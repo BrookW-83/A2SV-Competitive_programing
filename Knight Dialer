@@ -1,0 +1,32 @@
+class Solution:
+    def knightDialer(self, n: int) -> int:
+        dialer = [[0 for col in range(3)] for row in range(4)] 
+        direction = [[-2,1],[-2,-1],[-1,-2],[-1,2],[1,2],[1,-2],[2,-1],[2,1]]
+        dialer[3][0] = 1
+        dialer[3][2] = 1
+
+        mod = pow(10, 9) + 7
+        memo = defaultdict(int)
+        inBound = lambda r, c : -1 < r < 4 and -1 < c < 3
+
+        def dfs(row, col, curr_length):
+            if dialer[row][col] == 1:
+                return 0
+
+            if  n == 1:
+                return 1
+
+            if (row,col, n) in memo:
+                return memo[(row,col,n)]
+
+            res = 0
+            for d1, d2 in direction:
+                new_row = row + d1
+                new_col = col + d2
+
+                if inBound(new_row, new_col) and dialer[new_row][new_col] != 1:
+                    res += dfs(new_row, new_col, n-1)
+
+            memo[(row,col, n)] = res
+
+            return memo[(row,col, n)]
