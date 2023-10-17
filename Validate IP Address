@@ -1,0 +1,52 @@
+class Solution:
+    def validIPAddress(self, queryIP: str) -> str:
+        #validating IP for IPv4
+        def isIPv4(IP):
+            numbers = IP.split('.')
+            if len(numbers) < 4 or len(numbers) > 4:             
+                return False
+
+            for num in numbers:
+                if len(num) == 0:
+                    return 0
+
+                for i in num:
+                    if not i.isdigit():
+                        return False
+
+                curr = int(num)
+                if curr < 0 or curr > 255:
+                    return False
+
+                if len(num) <=0 or (len(num) > 1 and len(num) != len(num.lstrip("0"))):
+                    return False
+
+            return True
+
+        #validating IP for IPv6
+        def isIPv6(IP):
+            numbers = IP.lower().split(':')
+            
+            if len(numbers) != 8:
+                return False
+
+            for num in numbers:
+                if len(num) < 1 or len(num) > 4:
+                    return False
+                
+                for i in num:
+                    if not (i.isdigit() or i in "abcdef"):
+                        return False
+
+            return True
+
+
+        if isIPv4(queryIP):
+            return "IPv4"
+
+        if isIPv6(queryIP):
+            return "IPv6"
+
+        return "Neither"
+
+        
