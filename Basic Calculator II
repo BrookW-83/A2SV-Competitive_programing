@@ -1,0 +1,32 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        if s == '0':
+            return 0
+
+        num, sign, stack = 0, '+', []
+        for i, char in enumerate(s):
+            if char.isdigit():
+                num = num * 10 + ord(char) - ord('0')
+
+            if (not char.isdigit() and char != ' ') or i == len(s)-1:
+                if sign == '+':
+                    stack.append(num)
+
+                elif sign == '-':
+                    stack.append(-num)
+
+                elif sign == '*':
+                    stack.append(stack.pop()*num)
+
+                elif sign == '/':
+                    curr = stack.pop()
+
+                    if (curr // num < 0 ) and (curr % num != 0):
+                        stack.append(curr//num + 1)
+                    else:
+                        stack.append(curr//num)
+
+                sign = char
+                num = 0
+        print(stack)
+        return sum(stack)
