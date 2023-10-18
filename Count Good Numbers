@@ -1,0 +1,20 @@
+class Solution:
+    def countGoodNumbers(self, n: int) -> int:
+        odd = n // 2
+        even = n // 2 + n % 2
+        mod = pow(10, 9) + 7
+
+        def binaryExp(x, curr):
+            if curr == 0:
+                return 1
+
+            if curr < 0:
+                return 1/binaryExp(x, -curr)
+
+            if curr % 2 == 0:
+                return binaryExp((x*x)%mod, curr//2)
+
+            else:
+                return x * binaryExp((x*x)%mod, (curr-1)//2)
+
+        return ((binaryExp(5, even)%mod) * (binaryExp(4, odd)%mod)) % mod
