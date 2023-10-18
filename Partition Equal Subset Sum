@@ -1,0 +1,21 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        subset_sum = sum(nums)
+
+        #if subset_sum is odd
+        if subset_sum % 2 != 0:
+            return False
+
+        target = subset_sum // 2
+        dp = set()
+        dp.add(0)
+
+        for i in range(len(nums)-1, -1, -1):
+            currSet = set()
+            for j in  dp:
+                currSet.add(nums[i] + j)
+                currSet.add(j)
+
+            dp = currSet
+
+        return True if target in dp else False
