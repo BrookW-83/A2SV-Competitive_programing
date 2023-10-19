@@ -1,0 +1,18 @@
+class Solution:
+    def repeatedStringMatch(self, a: str, b: str) -> int:
+        if b in a:
+            return 1
+
+        check = a
+        index, n = 1, len(b)
+
+        while b != check and len(check) <= n:
+            index += 1
+            check = a * index
+
+        if b in check:
+            return index
+        if b in a * (index + 1):
+            return index + 1
+
+        return -1
