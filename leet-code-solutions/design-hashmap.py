@@ -1,0 +1,69 @@
+class HashNode:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.next = None
+
+class MyHashMap:
+
+    def __init__(self):
+        self.size = 1000
+        self.table = [None] * self.size
+
+    def index(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        i = self.index(key)
+
+        if not self.table[i]:
+            self.table[i] = HashNode(key, value)
+            return
+
+        curr = self.table[i]
+        while curr:
+            if curr.key == key:
+                curr.val = value
+                return
+            if not curr.next:
+                curr.next = HashNode(key, value)
+                return
+            curr = curr.next   
+
+    def get(self, key: int) -> int:
+        i = self.index(key)
+        curr = self.table[i]
+
+        while curr:
+            if curr.key == key:
+                return curr.val
+            curr = curr.next
+ 
+        return -1
+        
+
+    def remove(self, key: int) -> None:
+        i = self.index(key)
+        curr = self.table[i]
+
+        if not curr:
+            return
+
+        if curr.key == key:
+            self.table[i] = curr.next
+            return
+
+        while curr.next:
+            if curr.next.key == key:
+                curr.next = curr.next.next
+                return
+
+            curr = curr.next
+        
+
+
+# Your MyHashMap object will be instantiated and called as such:
+# obj = MyHashMap()
+# obj.put(key,value)
+# param_2 = obj.get(key)
+# obj.remove(key)
